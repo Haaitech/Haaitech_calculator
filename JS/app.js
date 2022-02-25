@@ -35,13 +35,13 @@ equalsButton.addEventListener("click", compute);
 
 piButton.addEventListener("click", () => {
 	currentValue = Math.PI.toFixed(4);
-	currentValueText = "&#960;";
+	currentValueText = currentValueText.concat("&#960;");
 	updateDisplay();
 });
 
 rootButton.addEventListener("click", () => {
 	opperationvar = "&radic;";
-	currentValueText = currentValueText.concat("&radic;");
+	currentValueText = "&radic;".concat(currentValueText);
 	updateDisplay();
 });
 powerButton.addEventListener("click", () => {
@@ -62,12 +62,16 @@ function clear() {
 	answer = null;
 }
 
-// function deleteCharacter() {}
-
 function appendNumber(number) {
-	currentValue = currentValue.concat(number);
-	currentValueText = currentValueText.concat(number);
-	updateDisplay();
+	if (currentValue === "0" && number !== ".") {
+		alert("Please add a . before continuing");
+	} else if (number === "." && currentValue.includes(".")) {
+		alert("only one . permitted!");
+	} else {
+		currentValue = currentValue.concat(number);
+		currentValueText = currentValueText.concat(number);
+		updateDisplay();
+	}
 }
 
 function chooseOperation(operation) {
@@ -104,11 +108,13 @@ function compute() {
 		case "&radic;":
 			answer = Math.sqrt(Number(currentValue));
 			opperationvar = "";
+			previousValueText = "";
 			updateDisplay();
 			break;
 		case "x&sup2;":
 			answer = Math.pow(Number(currentValue), 2);
 			opperationvar = "";
+			previousValueText = "";
 			updateDisplay();
 			break;
 		default:
@@ -123,9 +129,9 @@ function updateDisplay() {
 			previousValueText + " " + opperationvar + " " + currentValueText + " =";
 		currentValueTextElement.innerHTML = answer;
 		currentValue = answer;
-		currentValueText = answer;
+		currentValueText = answer.toString();
 		answer = null;
-	} else if (opperationvar === "&radic;" || "x&sup2;") {
+	} else if (opperationvar === "&radic;" || opperationvar === "x&sup2;") {
 		currentValueTextElement.innerHTML = currentValueText;
 	} else {
 		previousValueTextElement.innerHTML =
