@@ -47,7 +47,6 @@ rootButton.addEventListener("click", () => {
 powerButton.addEventListener("click", () => {
 	opperationvar = "x&sup2;";
 	currentValueText = currentValueText.concat("&sup2;");
-	console.log(currentValueText);
 	updateDisplay();
 });
 
@@ -82,6 +81,10 @@ function chooseOperation(operation) {
 
 function compute() {
 	switch (opperationvar) {
+		case "":
+			answer = currentValue;
+			updateDisplay();
+			break;
 		case "+":
 			answer = Number(previousValue) + Number(currentValue);
 			updateDisplay();
@@ -115,11 +118,15 @@ function compute() {
 
 function updateDisplay() {
 	if (answer) {
+		answer = Math.round(answer * 1000) / 1000;
 		previousValueTextElement.innerHTML =
-			previousValueText + opperationvar + currentValueText + " =";
+			previousValueText + " " + opperationvar + " " + currentValueText + " =";
 		currentValueTextElement.innerHTML = answer;
 		currentValue = answer;
+		currentValueText = answer;
 		answer = null;
+	} else if (opperationvar === "&radic;" || "x&sup2;") {
+		currentValueTextElement.innerHTML = currentValueText;
 	} else {
 		previousValueTextElement.innerHTML =
 			previousValueText + " " + opperationvar;
